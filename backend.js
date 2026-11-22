@@ -15,12 +15,23 @@ window.AutoPitsAPI = (()=>{
   const base=(cfg.supabaseUrl||'').replace(/\/$/,'');
   function session(){try{return JSON.parse(sessionStorage.getItem(TOKEN_KEY)||'null')}catch{return null}}
   function saveSession(x){if(x)sessionStorage.setItem(TOKEN_KEY,JSON.stringify(x));else sessionStorage.removeItem(TOKEN_KEY)}
-  async function request(url,method='POST',body,token){
+  async function request(url,method='POST',body,token,timeoutMs=0){
     const headers={'apikey':cfg.publishableKey,'Content-Type':'application/json'};
     if(token)headers.Authorization='Bearer '+token;
+    const controller=timeoutMs>0?new AbortController():null;
+    const timer=controller?setTimeout(()=>controller.abort(),timeoutMs):null;
     let response;
-    try{response=await fetch(base+url,{method,headers,body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'})}
-    catch{throw Error('No hay conexión con Supabase. Comprueba internet y configuración. No se guardaron datos.');}
+    try{
+      response=await fetch(base+url,{
+        method,headers,
+        body:body===undefined?undefined:JSON.stringify(body),
+        cache:'no-store',
+        ...(controller?{signal:controller.signal}:{})
+      });
+    }catch(err){
+      if(controller?.signal.aborted) throw Error('La conexión con Supabase tardó demasiado; el registro no pudo confirmarse.');
+      throw Error('No hay conexión con Supabase. Comprueba internet y configuración. No se pudo confirmar el registro.');
+    }finally{if(timer!==null)clearTimeout(timer)}
     let data;try{data=await response.json()}catch{data=null}
     if(!response.ok){
       const message=data?.message||data?.msg||data?.error_description||data?.details||data?.error||`Error ${response.status}`;
@@ -34,7 +45,7 @@ window.AutoPitsAPI = (()=>{
     try{const t=await request('/auth/v1/token?grant_type=refresh_token','POST',{refresh_token:s.refresh_token});const next={access_token:t.access_token,refresh_token:t.refresh_token,expires_at:Date.now()+t.expires_in*1000};saveSession(next);return next.access_token}
     catch{saveSession(null);throw Error('Tu sesión venció. Vuelve a iniciar sesión.');}
   }
-  async function rpc(name,payload={},isPublic=false){return request('/rest/v1/rpc/'+name,'POST',payload,isPublic?null:await refresh())}
+  async function rpc(name,payload={},isPublic=false){return request('/rest/v1/rpc/'+name,'POST',payload,isPublic?null:await refresh(),isPublic?7500:0)}
   async function login(email,password){
     if(!cloud){if(!demo)throw Error('Configuración central pendiente. El panel no está disponible.');if(password!=='DEMO2026')throw Error('Clave DEMO incorrecta');return true}
     const s=await request('/auth/v1/token?grant_type=password','POST',{email,password});saveSession({access_token:s.access_token,refresh_token:s.refresh_token,expires_at:Date.now()+s.expires_in*1000});

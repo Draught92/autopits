@@ -30,6 +30,16 @@
   if(AutoPitsAPI.mode==='demo') $('requestMode').textContent='MODO DEMO LOCAL: la solicitud solo aparece en este navegador. No usar datos reales.';
   else if(AutoPitsAPI.mode==='unconfigured') $('requestMode').textContent='El registro central todavía no está configurado. Puedes contactar por WhatsApp; tu solicitud no se guardará en el sistema.';
   const form=$('appointmentForm');
+  let pendingAttemptToken=null;
+  const makeToken=()=>{
+    if(window.crypto?.randomUUID)return window.crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{
+      const r=Math.floor(Math.random()*16);return (c==='x'?r:((r&3)|8)).toString(16);
+    });
+  };
+  // Conservar el identificador si hay un error de conexión y el usuario reintenta sin modificar datos.
+  form.addEventListener('input',()=>{pendingAttemptToken=null});
+  form.addEventListener('change',()=>{pendingAttemptToken=null});
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     if(!form.checkValidity()){form.reportValidity();return}
@@ -43,22 +53,24 @@
     if(new Date(data.preferred_date+'T12:00:00').getDay()===0){
       updateArrivalInfo();dateInput.reportValidity();return;
     }
-    const button=$('submitRequest');if(button.disabled)return;button.disabled=true;status.style.display='block';status.textContent='Registrando solicitud y preparando WhatsApp...';
-    // Abrir la ventana dentro del gesto del usuario evita bloqueos de ventanas emergentes.
-    const popup=window.open('about:blank','_blank');
-    // Un token nuevo por intento; no se recicla para un formulario modificado.
-    // El botón bloqueado impide el doble clic en este intento.
-    const token=crypto.randomUUID();
-    let folio=null,hasError=false;
+    const button=$('submitRequest');
+    if(button.disabled)return;
+    button.disabled=true;
+    status.style.display='block';
+    status.textContent='Registrando solicitud. Después abriremos WhatsApp (máximo 8 segundos)...';
+    pendingAttemptToken ||= makeToken();
+    let folio=null,registrationError=null;
     try{
-      const result=await AutoPitsAPI.submitPublic({...data,submission_token:token});folio=result.folio;
-
-      form.reset();
-      updateArrivalInfo();
-    }catch(err){hasError=true;console.warn('Solicitud no registrada: ', err?.message||'Error de conexión');}
+      const result=await AutoPitsAPI.submitPublic({...data,submission_token:pendingAttemptToken});
+      folio=result?.folio||null;
+      if(folio){pendingAttemptToken=null;form.reset();updateArrivalInfo()}
+    }catch(err){
+      registrationError=err;
+      console.warn('No se pudo confirmar registro de solicitud:',err?.message||'Error de conexión');
+    }
     const message=[
       'Hola AutoPits, quiero solicitar atención.',
-      folio?`Referencia ${AutoPitsAPI.mode==='demo'?'DEMO ':''}${folio}`:'Referencia: pendiente de registro',
+      folio?`Referencia ${AutoPitsAPI.mode==='demo'?'DEMO ':''}${folio}`:'Referencia: por registrar en el taller',
       `Nombre: ${data.customer_name}`,`Vehículo: ${data.vehicle_brand} ${data.vehicle_model} ${data.vehicle_year}`,
       `Servicio: ${data.service}`,`Fecha preferida: ${data.preferred_date||'Por acordar'}`,
       `Recepción recomendada: desde las ${arrivalHour(data.preferred_date)} (sujeta a confirmación)`,
@@ -66,14 +78,20 @@
       'La cita requiere confirmación del taller.'
     ].join('\n');
     const url='https://wa.me/528189943114?text='+encodeURIComponent(message);
-    let opened=false;
-    if(popup && !popup.closed){try{popup.location.href=url;opened=true}catch{popup.close()}}
     status.replaceChildren();
-    const title=document.createElement('p');title.textContent=hasError?
-      'El mensaje de WhatsApp se preparó, pero la solicitud NO se guardó en la base central. Envía el mensaje y el taller deberá registrar la solicitud manualmente.':
-      (AutoPitsAPI.mode==='demo'?`Solicitud DEMO ${folio} guardada únicamente en este navegador.`:`Solicitud ${folio} registrada centralmente. ${opened?'Se intentó abrir WhatsApp.':'Abre WhatsApp con el enlace siguiente.'} Comprueba que el mensaje se envíe; la cita aún no está confirmada.`);
-    const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener';link.textContent='Abrir WhatsApp (si no abrió automáticamente)';link.style.cssText='display:inline-block;margin-top:10px;font-weight:800;text-decoration:underline;color:#14532d';
+    const title=document.createElement('p');
+    title.textContent=registrationError?
+      'No pudimos confirmar el guardado en la base. Se abrirá WhatsApp para que puedas enviar la solicitud; el taller podrá registrarla manualmente.':
+      (AutoPitsAPI.mode==='demo'?
+        'Solicitud DEMO '+folio+' guardada en este navegador. Abriendo WhatsApp...':
+        'Solicitud '+(folio||'recibida')+' registrada. Abriendo WhatsApp; comprueba que envías el mensaje para confirmar el contacto.');
+    const link=document.createElement('a');link.href=url;link.target='_self';link.rel='noopener';link.textContent='Ir a WhatsApp si no se abre automáticamente';link.style.cssText='display:inline-block;margin-top:10px;font-weight:800;text-decoration:underline;color:#14532d';
     status.append(title,link);
     button.disabled=false;
+    // Abrir WhatsApp en la misma pestaña: evita pestañas about:blank que quedan cargando en teléfonos.
+    try{window.location.assign(url)}catch(err){
+      console.warn('No se pudo abrir WhatsApp automáticamente:',err?.message||'');
+      title.textContent+=' Toca el enlace de WhatsApp para continuar.';
+    }
   });
 })();
