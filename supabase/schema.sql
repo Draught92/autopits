@@ -256,7 +256,7 @@ end $$;
 
 create or replace function public.ap_admin_update_request(p_id uuid,p jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
-declare r public.ap_requests%rowtype; old_status text; phone text; plate text; next_status text; next_date date;
+declare r public.ap_requests%rowtype; old_status text; v_phone text; v_plate text; next_status text; next_date date;
 begin
   perform public.ap_require_staff();
   if length(trim(coalesce(p->>'actor','')))<2 or length(trim(coalesce(p->>'reason','')))<2 then raise exception 'Indica responsable y motivo'; end if;
@@ -270,13 +270,13 @@ begin
   if next_status='confirmada' and next_date is null then raise exception 'Indica la fecha de cita'; end if;
   if next_date is not null and extract(dow from next_date)=0 then raise exception 'El taller permanece cerrado el domingo'; end if;
   if next_status='reprogramada' and (not (p ? 'preferred_date') or next_date is null) then raise exception 'Indica una fecha nueva'; end if;
-  phone:=case when p ? 'customer_phone' then regexp_replace(coalesce(p->>'customer_phone',''),'[^0-9]','','g') else coalesce(r.customer_phone,'') end;
-  if phone<>'' and phone !~ '^[0-9]{10}$' then raise exception 'Teléfono inválido: usa 10 dígitos'; end if;
-  plate:=case when p ? 'plate' then upper(regexp_replace(coalesce(p->>'plate',''),'\s','','g')) else coalesce(r.plate,'') end;
-  if plate<>'' and char_length(plate) not between 4 and 12 then raise exception 'Placas inválidas'; end if;
+  v_phone:=case when p ? 'customer_phone' then regexp_replace(coalesce(p->>'customer_phone',''),'[^0-9]','','g') else coalesce(r.customer_phone,'') end;
+  if v_phone<>'' and v_phone !~ '^[0-9]{10}$' then raise exception 'Teléfono inválido: usa 10 dígitos'; end if;
+  v_plate:=case when p ? 'plate' then upper(regexp_replace(coalesce(p->>'plate',''),'\s','','g')) else coalesce(r.plate,'') end;
+  if v_plate<>'' and char_length(v_plate) not between 4 and 12 then raise exception 'Placas inválidas'; end if;
   update public.ap_requests set appointment_status=next_status,preferred_date=next_date,
     preferred_time=case when p ? 'preferred_time' then nullif(p->>'preferred_time','') else preferred_time end,
-    customer_phone=nullif(phone,''),plate=nullif(plate,''),
+    customer_phone=nullif(v_phone,''),plate=nullif(v_plate,''),
     clarification_minutes=case when p ? 'clarification_minutes' then nullif(p->>'clarification_minutes','')::numeric else clarification_minutes end,
     attention_minutes=case when p ? 'attention_minutes' then nullif(p->>'attention_minutes','')::numeric else attention_minutes end,
     is_pilot=case when p ? 'is_pilot' then (p->>'is_pilot')::boolean else is_pilot end,
@@ -451,7 +451,7 @@ begin
   o:=public.ap_admin_create_order(idreq,'Operador DEMO','Orden sintética para evidencias');
   idord:=(o->>'id')::uuid;
   perform public.ap_admin_update_order(idord,jsonb_build_object('status','En diagnóstico','diagnosis','Desgaste simulado (DEMO)',
-    'proposed_work','Inspección y cambio de balatas (DEMO)','estimated_cost',1200), 'Operador DEMO','Diagnóstico de prueba');
+    'proposed_work','Inspección y cambio de balatas (DEMO)','estimated_cost',1200,'received_at','2026-11-10'), 'Operador DEMO','Diagnóstico de prueba');
   return jsonb_build_object('folio',o->>'folio','request_folio',r->>'folio');
 end $$;
 
