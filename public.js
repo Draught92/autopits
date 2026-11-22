@@ -57,7 +57,7 @@
     if(button.disabled)return;
     button.disabled=true;
     status.style.display='block';
-    status.textContent='Registrando solicitud. Después abriremos WhatsApp (máximo 8 segundos)...';
+    status.textContent='Registrando la solicitud... Después podrás abrir WhatsApp con un botón.';
     pendingAttemptToken ||= makeToken();
     let folio=null,registrationError=null;
     try{
@@ -81,17 +81,24 @@
     status.replaceChildren();
     const title=document.createElement('p');
     title.textContent=registrationError?
-      'No pudimos confirmar el guardado en la base. Se abrirá WhatsApp para que puedas enviar la solicitud; el taller podrá registrarla manualmente.':
+      'No se pudo confirmar el guardado en la base central. Puedes enviar el mensaje por WhatsApp; el taller registrará la solicitud manualmente.':
       (AutoPitsAPI.mode==='demo'?
-        'Solicitud DEMO '+folio+' guardada en este navegador. Abriendo WhatsApp...':
-        'Solicitud '+(folio||'recibida')+' registrada. Abriendo WhatsApp; comprueba que envías el mensaje para confirmar el contacto.');
-    const link=document.createElement('a');link.href=url;link.target='_self';link.rel='noopener';link.textContent='Ir a WhatsApp si no se abre automáticamente';link.style.cssText='display:inline-block;margin-top:10px;font-weight:800;text-decoration:underline;color:#14532d';
-    status.append(title,link);
+        'Solicitud DEMO '+folio+' guardada en este navegador.':
+        'Solicitud '+(folio||'registrada')+' guardada en la base central.');
+    const guide=document.createElement('p');
+    guide.textContent='Paso final: toca el botón verde para abrir WhatsApp y pulsa Enviar dentro de la aplicación. La cita requiere confirmación del taller.';
+    guide.style.margin='9px 0 13px';
+    const link=document.createElement('a');
+    link.href=url;
+    link.target='_self';
+    link.rel='noopener';
+    link.className='btn btn-whatsapp';
+    link.textContent='Abrir WhatsApp y enviar mensaje';
+    link.style.cssText='display:inline-flex;text-align:center;max-width:100%;white-space:normal';
+    // Solo un enlace tocado directamente por la persona puede abrir WhatsApp.
+    // No se crean pestañas about:blank ni redirecciones tras esperar la red.
+    status.append(title,guide,link);
     button.disabled=false;
-    // Abrir WhatsApp en la misma pestaña: evita pestañas about:blank que quedan cargando en teléfonos.
-    try{window.location.assign(url)}catch(err){
-      console.warn('No se pudo abrir WhatsApp automáticamente:',err?.message||'');
-      title.textContent+=' Toca el enlace de WhatsApp para continuar.';
-    }
+
   });
 })();
