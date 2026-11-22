@@ -1,0 +1,153 @@
+{
+  "version": "5.0",
+  "fecha": "2026-11-20T05:08:40+00:00",
+  "tipo": "Navegador Chromium contra HTTP local, modo DEMO",
+  "avisos": [
+    "No se probó Supabase real",
+    "No se enviaron mensajes WhatsApp",
+    "No hay resultados del piloto real"
+  ],
+  "resultados": [
+    {
+      "codigo": "P01",
+      "escenario": "Solicitud y WhatsApp",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "El nombre es obligatorio; abre WhatsApp y crea solicitud DEMO",
+      "resultado_observado": "Formulario DEMO almacenado en navegador, ventana WhatsApp abierta; no implica envío.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:36+00:00",
+      "evidencia": "V5_02_solicitud_publica.png"
+    },
+    {
+      "codigo": "P02",
+      "escenario": "Confirmación/reprogramación de cita",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Cambia estado, fecha y conserva historial",
+      "resultado_observado": "Confirmación y reprogramación en interfaz; cancelación verificada en almacén DEMO.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:36+00:00",
+      "evidencia": "V5_03_gestion_cita.png"
+    },
+    {
+      "codigo": "P03",
+      "escenario": "Cliente y vehículo sin duplicados",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Reutiliza teléfono/placas y vincula orden",
+      "resultado_observado": "Dos ORD con un solo cliente y vehículo, sin duplicación.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:37+00:00",
+      "evidencia": "V5_04_orden_diagnostico.png"
+    },
+    {
+      "codigo": "P04",
+      "escenario": "Folio único ORD",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Orden con folio ORD visible",
+      "resultado_observado": "Folio único: Orden ORD-6C4FCD3A3D72 DEMO",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:37+00:00",
+      "evidencia": "V5_04_orden_diagnostico.png"
+    },
+    {
+      "codigo": "P05",
+      "escenario": "Diagnóstico y presupuesto",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Conserva evidencia, diagnóstico, costo y tiempo",
+      "resultado_observado": "Diagnóstico, evidencia referenciada, costo y tiempo estimados.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:37+00:00",
+      "evidencia": "V5_04_orden_diagnostico.png"
+    },
+    {
+      "codigo": "P06",
+      "escenario": "Rechazo y autorización parcial",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Registra decisión, fecha, medio, responsable y alcance",
+      "resultado_observado": "Rechazo bloquea avance; autorización parcial permite únicamente alcance documentado.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:37+00:00",
+      "evidencia": "V5_05_autorizacion.png"
+    },
+    {
+      "codigo": "P07",
+      "escenario": "Estados e historial",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Secuencia válida visible en la línea de tiempo",
+      "resultado_observado": "Estados ordenados y bitácora con fecha/responsable.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:38+00:00",
+      "evidencia": "V5_05_autorizacion.png"
+    },
+    {
+      "codigo": "P08",
+      "escenario": "Preparación de WhatsApp",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Registro preparado y confirmado por acción separada",
+      "resultado_observado": "Mensaje registrado preparado y confirmación manual independiente. No se envió WhatsApp.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:38+00:00",
+      "evidencia": "V5_06_mensajes.png"
+    },
+    {
+      "codigo": "P09",
+      "escenario": "Cierre validado",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "No cierra incompleta; registra entrega completa",
+      "resultado_observado": "Bloqueó cierre sin campos y cerró con fecha, trabajo y costo.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:38+00:00",
+      "evidencia": "V5_07_cierre_e_historial.png"
+    },
+    {
+      "codigo": "P10",
+      "escenario": "Búsqueda e historial interno",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Busca por cliente, placa y orden",
+      "resultado_observado": "Búsqueda por placas, cliente y orden funcional.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:38+00:00",
+      "evidencia": "V5_07_cierre_e_historial.png"
+    },
+    {
+      "codigo": "P11",
+      "escenario": "Exportaciones JSON y CSV",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Genera archivos descargables y excluye DEMO",
+      "resultado_observado": "JSON analizado correctamente, CSV con columnas y órdenes; sin indicadores de piloto real.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:39+00:00",
+      "evidencia": "V5_08_indicadores.png"
+    },
+    {
+      "codigo": "P12",
+      "escenario": "Dos dispositivos con la misma información",
+      "datos": "Se necesita una instancia Supabase real",
+      "resultado_esperado": "Solicitudes y órdenes disponibles desde dos sesiones independientes",
+      "resultado_observado": "No ejecutada: faltan URL, clave pública y cuentas administrativas reales.",
+      "estado": "BLOQUEADA EXTERNA",
+      "fecha": "2026-11-20T05:08:39+00:00",
+      "evidencia": "PENDIENTES.md"
+    },
+    {
+      "codigo": "P13",
+      "escenario": "Campos obligatorios",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "No permite registro incompleto",
+      "resultado_observado": "Se bloquean formularios con nombre incompleto.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:39+00:00",
+      "evidencia": "V5_03_gestion_cita.png"
+    },
+    {
+      "codigo": "P14",
+      "escenario": "No reparar sin autorización",
+      "datos": "Registros sintéticos etiquetados DEMO",
+      "resultado_esperado": "Bloquea reparación no autorizada",
+      "resultado_observado": "Bloquea transición directa a reparación.",
+      "estado": "APROBADA DEMO",
+      "fecha": "2026-11-20T05:08:37+00:00",
+      "evidencia": "V5_04_orden_diagnostico.png"
+    }
+  ],
+  "errores_javascript": []
+}
