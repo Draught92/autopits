@@ -1,3 +1,21 @@
+# Ajuste del sitio público — 22 de noviembre de 2026
+
+- Se actualizó la experiencia verificada del taller de 20+ a **30 años** en metadatos SEO, portada, tarjeta y apartado «Nosotros».
+- Se eliminó el flujo de ventana vacía `about:blank` que se abría al preparar WhatsApp: después de guardar la solicitud se navega a `wa.me` en la misma pestaña.
+- La operación pública tiene un tiempo máximo de espera de **7.5 segundos**, con enlace directo de respaldo. Si no se confirma el guardado, se avisa sin afirmar que los datos están almacenados.
+- Los reintentos sin cambio de datos conservan el identificador para reducir envíos duplicados.
+- Se conservan el formulario sin teléfono, el horario de recepción, la privacidad, el panel y la conexión existente con Supabase.
+
+## Verificaciones de esta corrección
+- `node --check`: scripts de aplicación y conexión sin errores de sintaxis en la copia de pruebas.
+- Chromium de escritorio y emulación móvil: el formulario genera un enlace `wa.me` válido con folio en respuesta simulada correcta.
+- Chromium móvil con Supabase simulado en error 503: mantiene la posibilidad de enviar por WhatsApp y el aviso de registro no confirmado.
+- Supabase simulado sin respuesta: el intento aborta a los 7.5 segundos y no queda cargando indefinidamente.
+- Maquetación de 390 y 1365 px: sin desbordamiento horizontal en los tamaños evaluados.
+- **Pendiente:** confirmar apertura real de la app WhatsApp en un teléfono físico y validar un registro real de punta a punta.
+
+---
+
 # Cambios de integración y validación — 22/11/2026
 
 - Se conectó el proyecto Supabase real y se registró a su único usuario autorizado en `ap_staff`.
