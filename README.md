@@ -9,7 +9,7 @@
 - El modo DEMO solo se permite en localhost. No publicar la configuración DEMO.
 - La fecha académica objetivo (20 de noviembre de 2026) ha transcurrido; la fecha efectiva de aceptación dependerá de la evidencia real.
 
-## 1. Ejecución segura (sin credenciales)
+## 1. Ejecutar y acceder
 En la carpeta del proyecto ejecuta:
 
 ```bash
@@ -18,12 +18,12 @@ python -m http.server 8000
 
 Abre `http://localhost:8000/index.html` y `http://localhost:8000/admin.html`.
 
-La configuración que se entrega (`config.js`) es **unconfigured**: la página pública conserva WhatsApp y advierte si no se pudo guardar la solicitud; **el panel administrativo está desactivado**. Esto impide publicar por error un panel de prueba en el dominio.
+La configuración actual (`config.js`) utiliza **Supabase**, con URL y clave publicable. El panel requiere una cuenta de Supabase Auth habilitada en `ap_staff`. Si cambias a un entorno sin conexión, usa `config.example.js` como plantilla y no expongas claves privadas.
 
 **Para probar únicamente con datos sintéticos, en tu computadora:** copia `config.demo.example.js` sobre `config.js`, recarga `http://localhost:8000` y entra a `admin.html` con `DEMO2026`. El modo DEMO solo funciona en localhost o en páginas aisladas de pruebas. **Nunca subas ese config.js DEMO a GitHub Pages.** La contraseña DEMO **no protege datos reales**. Las capturas adjuntas son sintéticas.
 
-## 2. Configurar Supabase con base central
-Se requiere una instancia del proveedor; este paquete **no la ha activado**.
+## 2. Configuración inicial de Supabase (ya aplicada al proyecto Autopits)
+La instancia central ya fue creada, el esquema instalado y el administrador autorizado. Sigue los pasos siguientes solamente si necesitas reproducir la instalación en otro proyecto o añadir otro administrador; **no vuelvas a ejecutar el esquema inicial a ciegas sobre la base actual**.
 
 1. Haz copia de seguridad de una base existente. En una instalación nueva crea proyecto en [Supabase](https://supabase.com/). Para actualizar v4.1, utiliza el proyecto correspondiente y revisa antes el SQL; la migración añade columnas sin recrear las tablas. No ejecutes sobre otra aplicación.
 2. Supabase → **SQL Editor** → revisa y ejecuta el archivo `supabase/schema.sql` íntegro. No declares la migración exitosa sin examinar los mensajes. El archivo contiene tablas, índices, restricciones, RPC y revocación de privilegios directos.
@@ -53,7 +53,7 @@ La autorización parcial **no comprueba automáticamente** que los trabajos real
 ## 4. Publicación con GitHub Pages
 
 - Haz respaldo del repositorio `Draught92/autopits`.
-- Configura y verifica Supabase **antes de publicar** este paquete como sistema operativo.
+- Supabase y las validaciones SQL básicas están configurados; publicar para **piloto controlado** no equivale a aceptar el proyecto académicamente.
 - Conserva `CNAME` con `autopits.net` y `main` → `/ (root)`. No modifiques DNS de GoDaddy.
 - Sube a la raíz solo estos archivos del sitio: `index.html`, `admin.html`, `public.js`, `admin.js`, `backend.js`, `demo-store.js`, **tu `config.js` con solo datos públicos**, `Logo.jpg`, `privacidad.html`, `CNAME`, `robots.txt`, `sitemap.xml`. Los demás archivos (SQL, README, capturas, scripts de pruebas) son de desarrollo.
 - Comprueba en `https://autopits.net` el formulario y WhatsApp, en móvil y escritorio, y en `/admin.html` la autenticación y sincronización real.
