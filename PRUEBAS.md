@@ -1,3 +1,23 @@
+# Verificación adicional sobre Supabase real · 22/11/2026
+
+Los resultados originales del 20/11/2026 que aparecen después son **pruebas DEMO**, no una validación de producción.
+
+| Prueba adicional | Entorno y datos | Resultado |
+|---|---|---|
+| Solicitud anónima | PostgreSQL real; registro sintético con rollback | Aprobada: emitió SOL |
+| Administración autorizada | PostgreSQL real; usuario activo en ap_staff | Aprobada: obtuvo snapshot |
+| Acceso no autorizado | Rol anon y usuario autenticado sin ap_staff | Aprobada: acceso denegado |
+| Flujo interno | PostgreSQL real; transacción sintética revertida | Aprobada: cita → ORD → diagnóstico → autorización → reparación → mensaje → entrega |
+| Reglas críticas | PostgreSQL real; prueba sintética revertida | Aprobada: bloquear reparación directa, autorización sin datos y cierre incompleto |
+| Historial y mensajes | PostgreSQL real; snapshot antes de rollback | Aprobada: eventos y comunicación confirmada manualmente |
+| Revisión de permisos | PostgreSQL real | Aprobada: RLS activo en 9 tablas; datos reales creados por la prueba: 0 |
+| P12 — dos dispositivos | Navegadores físicos | **Pendiente** |
+| Piloto 30 solicitudes y aceptación | Casos auténticos | **Pendiente** |
+
+La interfaz se probó localmente en Chromium con DEMO: 13/14 verificaciones aprobadas y P12 pendiente. **No afirmar que el piloto real ha sido aprobado**.
+
+---
+
 # Resultados de pruebas — AutoPits Conecta v5.0
 
 **Fecha de ejecución:** 2026-11-20
