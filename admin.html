@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b0d10">
+<title>Administración · AutoPits Conecta</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Arial,sans-serif;color-scheme:dark;--bg:#0b0d10;--panel:#15191f;--yellow:#f4c400;--muted:#b8bec8;--border:#353c46}
+*{box-sizing:border-box}body{background:var(--bg);color:#f7f7f5;margin:0;line-height:1.55}
+header{background:#171b20;border-bottom:2px solid var(--yellow);padding:16px max(16px,4%);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.header-id{display:flex;align-items:center;gap:14px}.header-id img{width:48px;height:48px;background:#fff;border-radius:9px;object-fit:contain;padding:3px}
+h1{margin:0;font-size:1.38rem}h2{font-size:1.4rem;margin:.3em 0 .6em}h3{margin:1.1em 0 .5em;font-size:1.1rem}p{margin:.6em 0 1em}
+main{max-width:1260px;margin:auto;padding:22px 18px 75px}a{color:#ffdb2d}a:hover{text-decoration:underline}
+button,.button{background:var(--yellow);color:#111;border:1px solid transparent;border-radius:9px;padding:10px 14px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px}
+button:hover,.button:hover{filter:brightness(1.08)}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #ffdc2e;outline-offset:2px}
+button:disabled{opacity:.47;cursor:not-allowed}.secondary{background:#333b46;color:white;border:1px solid #59616c}.danger{background:#8f2a2a;color:white}
+input,select,textarea{background:#202731;color:white;border:1px solid #5e6671;padding:11px;border-radius:8px;width:100%;min-width:0}
+input[type=checkbox]{width:18px;height:18px;accent-color:#f4c400}textarea{min-height:85px;resize:vertical}
+label{display:block;font-weight:780;font-size:.87rem;margin:9px 0 5px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px;margin:17px 0;box-shadow:0 8px 28px rgba(0,0,0,.1)}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.tab{background:#2f3540;color:white;border:1px solid #454b54}.tab[aria-selected=true]{background:var(--yellow);color:#111}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}.metrics strong{display:block;font-size:1.85rem;line-height:1.1;color:var(--yellow);margin:7px 0}.metrics small{font-size:.85rem}
+.muted,small{color:var(--muted)}.tag{display:inline-block;color:#181a1c;background:var(--yellow);font-size:.73rem;font-weight:900;padding:2px 6px;border-radius:5px}
+.scroll{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:690px;font-size:.91rem}td,th{border-bottom:1px solid #39414c;padding:11px 9px;text-align:left;vertical-align:top}th{color:#e9edf2;background:#20252d}td button{padding:7px 10px;min-height:36px}
+#notice{padding:13px;border-radius:10px;min-height:45px;color:#ffe476;background:#222315;white-space:pre-wrap}
+#login{max-width:530px;margin:55px auto}#workspace[hidden],#login[hidden],section[hidden],[hidden]{display:none!important}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px 17px}.formgrid .wide{grid-column:1/-1}
+.history{padding:13px 13px 13px 35px;background:#0e1217;border-radius:9px;max-height:340px;overflow:auto}.history li{margin:10px 0}.history small{display:block;white-space:pre-wrap;overflow-wrap:anywhere}
+.actionrow{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:16px 0 6px}.pill{background:#303943;border:1px solid #4d5863;padding:5px 9px;border-radius:99px;font-size:.78rem}
+.note{background:#1f251e;border-left:4px solid var(--yellow);border-radius:8px;padding:13px 16px;color:#ecf0de}.warning{background:#311f18;border:1px solid #af6533;padding:13px;border-radius:8px}
+.checkbox-line{display:flex;align-items:center;gap:8px;cursor:pointer}details>summary{cursor:pointer;font-weight:850;padding:8px}details{border:1px solid #333b44;border-radius:9px;padding:8px 12px;margin:12px 0}
+#loadStatus{font-weight:800;color:#ffe478}.text-filter{max-width:420px}.inline-form{max-width:650px}
+@media(max-width:620px){main{padding:12px 10px 70px}.panel{padding:15px}h1{font-size:1.17rem}header{align-items:flex-start}header .actionrow{margin:0}.actionrow button{flex:1 1 auto}table{min-width:650px}.grid{grid-template-columns:1fr 1fr;gap:8px}.metrics .panel{padding:12px}.metrics strong{font-size:1.4rem}}
+@media print{header,nav,#notice,.no-print,button,#login,#requests,#people,#metrics,#acceptance{display:none!important}body{background:white;color:black}.panel{background:white;color:black;border:1px solid #aaa;box-shadow:none}input,textarea,select{color:black;background:white;border:0}main{max-width:none}#orders{display:block!important}#orderList{display:none}#orderDetail{display:block!important}}
+</style></head>
+<body>
+<header><div class="header-id"><img src="Logo.jpg" alt="Logo AutoPits"><div><h1>AutoPits Conecta <span id="modeTag" class="tag">DEMO</span></h1><small>Administración interna · Proyecto Scrum · Objetivo 20/11/2026</small></div></div>
+<div class="actionrow"><a href="index.html">← Sitio público</a><button id="refresh" class="secondary" hidden>Actualizar datos</button><button id="logout" class="secondary" hidden>Cerrar sesión</button></div></header>
+<main>
+<div id="notice" aria-live="polite" role="status">Sistema preparado para iniciar.</div>
+<section class="panel" id="login"><h2>Acceso administrativo</h2>
+<p id="loginInfo" class="muted"></p>
+<div id="cloudFields" hidden><label for="email">Correo electrónico del personal</label><input id="email" type="email" autocomplete="username" placeholder="personal@ejemplo.com"></div>
+<label for="access" id="accessLabel">Contraseña</label><input id="access" type="password" autocomplete="current-password">
+<p><button id="enter">Entrar</button></p><small id="loginHint"></small></section>
+<div id="workspace" hidden>
+<div class="panel no-print" id="modeNotice"></div>
+<nav aria-label="Secciones de administración" class="no-print">
+<button type="button" class="tab" data-tab="requests" aria-selected="true">Solicitudes y citas · HU03</button>
+<button type="button" class="tab" data-tab="people" aria-selected="false">Clientes y vehículos · HU04</button>
+<button type="button" class="tab" data-tab="orders" aria-selected="false">Órdenes · HU05–09</button>
+<button type="button" class="tab" data-tab="metrics" aria-selected="false">Indicadores · HU10</button>
+<button type="button" class="tab" data-tab="acceptance" aria-selected="false">Pruebas y piloto</button>
+</nav>
+<div class="actionrow no-print"><label class="checkbox-line" for="includeDemo"><input type="checkbox" id="includeDemo"> Mostrar ejemplos DEMO en las listas (no afectan indicadores)</label><button id="seed" class="secondary">Cargar ejemplo DEMO</button><button id="removeDemo" class="danger">Eliminar ejemplos DEMO</button><span id="loadStatus"></span></div>
+<section id="requests" class="panel"><h2>Solicitudes y citas</h2><p class="muted">Registra la información recibida por WhatsApp, confirma o reprograma. El teléfono del remitente se captura únicamente aquí.</p>
+<div class="actionrow"><button id="toggleManual">+ Registrar solicitud desde WhatsApp</button></div>
+<details id="manualPanel" class="no-print" hidden><summary>Nueva solicitud manual</summary><form id="manualForm"><div class="formgrid">
+<div><label for="m_name">Nombre *</label><input id="m_name" required minlength="2"></div><div><label for="m_phone">Teléfono del remitente</label><input id="m_phone" inputmode="tel" placeholder="10 dígitos"></div>
+<div><label for="m_brand">Marca *</label><input id="m_brand" required></div><div><label for="m_model">Modelo *</label><input id="m_model" required></div><div><label for="m_year">Año *</label><input id="m_year" type="number" min="1950" max="2100" required></div>
+<div><label for="m_plate">Placas (si ya se conocen)</label><input id="m_plate"></div>
+<div><label for="m_service">Servicio *</label><select id="m_service"><option>Motor</option><option>Sistema eléctrico</option><option>Frenos</option><option>Suspensión</option><option>Diagnóstico automotriz</option><option>Mantenimiento general</option><option>Otro</option></select></div>
+<div><label for="m_date">Fecha preferida</label><input id="m_date" type="date"></div><div><label for="m_time">Horario preferido</label><input id="m_time" placeholder="Ej. 10:30"></div>
+<div class="wide"><label for="m_issue">Descripción *</label><textarea id="m_issue" required minlength="5"></textarea></div>
+<div><label for="m_actor">Responsable *</label><input id="m_actor" required value="Operador DEMO"></div></div><div class="actionrow"><button type="submit">Guardar solicitud</button></div></form></details>
+<label for="searchReq">Buscar folio, cliente, servicio o vehículo</label><input id="searchReq" class="text-filter" placeholder="Buscar solicitudes"><div class="scroll" id="requestList"></div><div id="requestDetail"></div></section>
+<section id="people" class="panel" hidden><h2>Clientes y vehículos vinculados</h2><p class="muted">Los registros se relacionan con las órdenes. El teléfono y las placas se normalizan para reducir duplicados.</p>
+<label for="searchPeople">Buscar nombre, teléfono, marca, modelo o placas</label><input id="searchPeople" class="text-filter" placeholder="Buscar personas y vehículos"><div class="scroll" id="peopleList"></div><div id="clientHistory"></div></section>
+<section id="orders" class="panel" hidden><h2>Órdenes de servicio</h2><div class="formgrid no-print"><div><label for="searchOrders">Buscar folio, cliente, placa o servicio</label><input id="searchOrders" placeholder="Buscar orden"></div>
+<div><label for="statusFilter">Filtrar por estado</label><select id="statusFilter"><option value="">Todos los estados</option><option>Vehículo recibido</option><option>En diagnóstico</option><option>Pendiente de autorización</option><option>Autorizada</option><option>En reparación</option><option>Lista para entrega</option><option>Entregada</option><option>Cancelada</option></select></div>
+<div><label for="fromDate">Desde</label><input id="fromDate" type="date"></div><div><label for="toDate">Hasta</label><input id="toDate" type="date"></div></div><div class="scroll no-print" id="orderList"></div><div id="orderDetail"></div></section>
+<section id="metrics" class="panel" hidden><h2>Indicadores del proyecto</h2><p class="muted">Línea base académica: 54 solicitudes, 32 incompletas (59.3 %) y 390 minutos de aclaraciones en cuatro semanas. Los resultados DEMO no son resultados reales.</p>
+<div id="metricCards" class="grid metrics"></div><div id="pilotSummary"></div><div class="actionrow"><button id="exportJson">Exportar todo a JSON</button><button id="exportCsv">Exportar CSV</button></div></section>
+<section id="acceptance" class="panel" hidden><h2>Pruebas de aceptación y piloto</h2><p class="muted">Las pruebas deben documentarse con evidencia real. Para aprobar agrega una referencia de evidencia verificable. Marca como aprobadas únicamente las comprobadas. HU04 requiere prueba central en dos dispositivos y HU10 una muestra real de al menos 30 solicitudes más aprobación del Product Owner.</p><div class="scroll" id="acceptanceList"></div></section>
+</div></main>
+<script src="config.js"></script><script src="demo-store.js"></script><script src="backend.js"></script><script src="admin.js"></script>
+</body></html>
