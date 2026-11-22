@@ -1,9 +1,13 @@
-# AutoPits Conecta · Versión 5.0 (19 de noviembre de 2026)
+# AutoPits Conecta · Versión 5.1 — Piloto con base central
 
-## Estado y alcance
-Continuación **directa de v4.1**: diseño negro/amarillo, identidad, horario, información del taller, contacto, WhatsApp, recepción matutina, formulario sin teléfono y **sin consulta pública por folio**. Página pública, panel interno y flujo de servicio integrado.
-
-**Importante**: el código de conexión Supabase está preparado, pero **no se ha probado contra una instancia real** por falta de URL, clave pública y usuario autorizado. **HU04, P12 y HU10 no están aceptadas**. No usar esta entrega con clientes reales hasta completar `PENDIENTES.md`, revisar seguridad y privacidad y aprobar piloto.
+## Estado verificado (22 de noviembre de 2026)
+- **Proyecto Supabase real enlazado**: `Autopits`, nueve tablas con RLS activo y RPC administrativas restringidas. Se creó y confirmó **un** usuario administrador activo en `ap_staff`.
+- **GitHub**: rama `autopits-v5-pruebas` con `config.js` de modo `supabase` (solo URL y clave publicable). La publicación en `main` se realiza después de verificar el flujo; no se modifican DNS ni dominio.
+- **Pruebas PostgreSQL**: solicitud pública anónima, acceso autorizado, rechazo a acceso sin autorización, flujo de cita a cierre, bitácora, WhatsApp, bloqueo de reparación y de cierre incompleto. Ejecutadas con datos sintéticos y cambios revertidos; no son resultados reales del taller.
+- **Pendientes**: prueba completa desde dos navegadores/dispositivos con la web publicada, controles antispam y revisión del aviso de privacidad, piloto real de al menos 30 solicitudes y aceptación del responsable.
+- El formulario público NO solicita teléfono ni publica estados/historial; WhatsApp es el canal de atención.
+- El modo DEMO solo se permite en localhost. No publicar la configuración DEMO.
+- La fecha académica objetivo (20 de noviembre de 2026) ha transcurrido; la fecha efectiva de aceptación dependerá de la evidencia real.
 
 ## 1. Ejecución segura (sin credenciales)
 En la carpeta del proyecto ejecuta:
