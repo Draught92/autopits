@@ -45,10 +45,10 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.tab{background:#2f3540;
 <div id="workspace" hidden>
 <div class="panel no-print" id="modeNotice"></div>
 <nav aria-label="Secciones de administración" class="no-print">
-<button type="button" class="tab" data-tab="requests" aria-selected="true">Solicitudes y citas · HU03</button>
-<button type="button" class="tab" data-tab="people" aria-selected="false">Clientes y vehículos · HU04</button>
-<button type="button" class="tab" data-tab="orders" aria-selected="false">Órdenes · HU05–09</button>
-<button type="button" class="tab" data-tab="metrics" aria-selected="false">Indicadores · HU10</button>
+<button type="button" class="tab" data-tab="requests" aria-selected="true">Solicitudes y citas</button>
+<button type="button" class="tab" data-tab="people" aria-selected="false">Clientes y vehículos</button>
+<button type="button" class="tab" data-tab="orders" aria-selected="false">Órdenes de servicio</button>
+<button type="button" class="tab" data-tab="metrics" aria-selected="false">Indicadores</button>
 <button type="button" class="tab" data-tab="acceptance" aria-selected="false">Pruebas y piloto</button>
 </nav>
 <div class="actionrow no-print"><label class="checkbox-line" for="includeDemo"><input type="checkbox" id="includeDemo"> Mostrar ejemplos DEMO en las listas (no afectan indicadores)</label><button id="seed" class="secondary">Cargar ejemplo DEMO</button><button id="removeDemo" class="danger">Eliminar ejemplos DEMO</button><span id="loadStatus"></span></div>
@@ -70,7 +70,7 @@ nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.tab{background:#2f3540;
 <div><label for="fromDate">Desde</label><input id="fromDate" type="date"></div><div><label for="toDate">Hasta</label><input id="toDate" type="date"></div></div><div class="scroll no-print" id="orderList"></div><div id="orderDetail"></div></section>
 <section id="metrics" class="panel" hidden><h2>Indicadores del proyecto</h2><p class="muted">Línea base académica: 54 solicitudes, 32 incompletas (59.3 %) y 390 minutos de aclaraciones en cuatro semanas. Los resultados DEMO no son resultados reales.</p>
 <div id="metricCards" class="grid metrics"></div><div id="pilotSummary"></div><div class="actionrow"><button id="exportJson">Exportar todo a JSON</button><button id="exportCsv">Exportar CSV</button></div></section>
-<section id="acceptance" class="panel" hidden><h2>Pruebas de aceptación y piloto</h2><p class="muted">Las pruebas deben documentarse con evidencia real. Para aprobar agrega una referencia de evidencia verificable. Marca como aprobadas únicamente las comprobadas. HU04 requiere prueba central en dos dispositivos y HU10 una muestra real de al menos 30 solicitudes más aprobación del Product Owner.</p><div class="scroll" id="acceptanceList"></div></section>
+<section id="acceptance" class="panel" hidden><h2>Pruebas de aceptación y piloto</h2><p class="muted">Las pruebas deben documentarse con evidencia real. Para aprobar agrega una referencia de evidencia verificable. Marca como aprobadas únicamente las comprobadas. El almacenamiento central debe verificarse en dos dispositivos. El cierre del piloto requiere una muestra real de al menos 30 solicitudes y la aprobación del responsable del taller.</p><div class="scroll" id="acceptanceList"></div></section>
 </div></main>
 <script src="config.js"></script><script src="demo-store.js"></script><script src="backend.js"></script><script src="admin.js"></script>
 </body></html>
