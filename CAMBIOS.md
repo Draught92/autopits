@@ -1,3 +1,16 @@
+# Cambios de integración y validación — 22/11/2026
+
+- Se conectó el proyecto Supabase real y se registró a su único usuario autorizado en `ap_staff`.
+- Se incorporó `config.js` publicable (URL del proyecto y clave `sb_publishable_`; sin secretos).
+- Se corrigió la función SQL `ap_admin_update_request`, donde un nombre de variable coincidía con una columna y bloqueaba la actualización de citas.
+- Se corrigió el ejemplo sintético `ap_admin_seed_demo` para registrar fecha de recepción antes de cambiar a «En diagnóstico».
+- Se verificó el recorrido completo sobre PostgreSQL con transacciones revertidas; el estudio académico permanece abierto.
+- Se eliminaron códigos HU de las etiquetas visibles del panel y el texto académico de la cabecera.
+- Se mantiene la página pública sin número telefónico, sin consulta de estados y sin botón flotante.
+- No se modificaron DNS ni credenciales secretas.
+
+---
+
 # AutoPits Conecta v5.0 — Cambios sobre el paquete v4.1
 
 ## Conservado
